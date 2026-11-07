@@ -134,8 +134,9 @@ public abstract class AbstractArrayMoveSwapEval implements IScalarEvaluator {
 
             //Checks that old/new indices are within the range of the list and whether they are valid values
             if (Double.isNaN(oldIndexVal) || Double.isInfinite(oldIndexVal) || Math.floor(oldIndexVal) < oldIndexVal
-                    || newIndexVal > (listLen - 1) || newIndexVal < -(listLen) || oldIndexVal < -(listLen)
-                    || oldIndexVal > (listLen - 1)) {
+                    || Double.isNaN(newIndexVal) || Double.isInfinite(newIndexVal)
+                    || Math.floor(newIndexVal) < newIndexVal || newIndexVal > (listLen - 1) || newIndexVal < -(listLen)
+                    || oldIndexVal < -(listLen) || oldIndexVal > (listLen - 1)) {
                 PointableHelper.setNull(result);
                 return;
             }
