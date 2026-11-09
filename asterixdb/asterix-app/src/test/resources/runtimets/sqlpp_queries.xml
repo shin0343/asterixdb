@@ -15717,6 +15717,11 @@
   </test-group>
   <test-group name="unnest">
     <test-case FilePath="unnest">
+      <compilation-unit name="range_int64_boundaries">
+        <output-dir compare="Text">range_int64_boundaries</output-dir>
+      </compilation-unit>
+    </test-case>
+    <test-case FilePath="unnest">
       <compilation-unit name="ASTERIXDB-2750_unnest_join">
         <output-dir compare="Text">ASTERIXDB-2750_unnest_join</output-dir>
       </compilation-unit>

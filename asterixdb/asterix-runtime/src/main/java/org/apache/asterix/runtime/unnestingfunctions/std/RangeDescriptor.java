@@ -69,6 +69,7 @@ public class RangeDescriptor extends AbstractUnnestingFunctionDynamicDescriptor 
                     private AMutableInt64 aInt64 = new AMutableInt64(0);
                     private long current;
                     private long max;
+                    private boolean exhausted;
 
                     @Override
                     public void init(IFrameTupleReference tuple) throws HyracksDataException {
@@ -78,19 +79,24 @@ public class RangeDescriptor extends AbstractUnnestingFunctionDynamicDescriptor 
                         eval1.evaluate(tuple, inputVal);
                         max = ATypeHierarchy.getLongValue(getIdentifier().getName(), 1, inputVal.getByteArray(),
                                 inputVal.getStartOffset());
+                        exhausted = current > max;
                     }
 
                     @SuppressWarnings("unchecked")
                     @Override
                     public boolean step(IPointable result) throws HyracksDataException {
-                        if (current > max) {
+                        if (exhausted) {
                             return false;
                         }
                         aInt64.setValue(current);
                         resultStorage.reset();
                         serde.serialize(aInt64, resultStorage.getDataOutput());
                         result.set(resultStorage);
-                        current++;
+                        if (current == max) {
+                            exhausted = true;
+                        } else {
+                            current++;
+                        }
                         return true;
                     }
 
